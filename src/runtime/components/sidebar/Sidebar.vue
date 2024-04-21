@@ -10,7 +10,7 @@ provide('isOpen', isOpen)
   <aside
     aria-label="sidebar"
     :class="{ 'w-64': isOpen, 'w-[70px]': !isOpen }"
-    class="border-r border-r-gray-200 h-screen bg-white transition-[width] duration-200"
+    class="sticky top-0 left-0 border-r border-r-gray-200 h-screen bg-white transition-[width] duration-200"
   >
     <div class="flex flex-col h-full p-4">
       <slot :open="isOpen" />

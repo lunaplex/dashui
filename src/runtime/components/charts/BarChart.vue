@@ -3,7 +3,7 @@ import { computed, useId } from '#imports'
 import colors from '#tailwind-config/theme/colors'
 import type { ChartData as ChartJSData, ChartOptions } from 'chart.js'
 import { Bar } from 'vue-chartjs'
-import { useTooltip } from '../../composables/useTooltip'
+import { chartTooltip } from '../../utils/chartTooltip'
 
 interface ChartData {
   label: string
@@ -11,12 +11,24 @@ interface ChartData {
   color?: keyof typeof colors
 }
 
-const props = defineProps<{
-  labels: string[]
-  data: ChartData[]
-  legend?: boolean | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
-  class?: string
-}>()
+const props = withDefaults(
+  defineProps<{
+    labels: string[]
+    data: ChartData[]
+    grid?: boolean
+    xaxis?: boolean
+    yaxis?: boolean
+    legend?: boolean | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+    class?: string
+    tooltip?: boolean
+  }>(),
+  {
+    grid: false,
+    xaxis: false,
+    yaxis: false,
+    tooltip: true
+  }
+)
 
 const id = useId()
 
@@ -44,7 +56,7 @@ const chartOptions = computed<ChartOptions<'bar'>>(() => ({
     tooltip: {
       enabled: false,
       position: 'nearest',
-      external: useTooltip
+      external: props.tooltip ? chartTooltip : undefined
     },
     filler: {
       propagate: false
@@ -52,10 +64,23 @@ const chartOptions = computed<ChartOptions<'bar'>>(() => ({
   },
   scales: {
     x: {
-      display: false
+      display: props.xaxis,
+      grid: {
+        display: false
+      }
     },
     y: {
-      display: false
+      display: props.grid || props.yaxis,
+      labels: false,
+      grid: {
+        display: props.grid
+      },
+      title: {
+        display: false
+      },
+      border: {
+        dash: [4, 4]
+      }
     }
   }
 }))
@@ -76,9 +101,11 @@ const chartData = computed<ChartJSData<'bar'>>(() => ({
   <div class="relative">
     <ClientOnly>
       <template #fallback>
+        <slot name="placeholder" />
         <div
+          v-if="!$slots.placeholder"
           :class="$props.class"
-          class="flex items-center justify-center text-gray-400"
+          class="flex items-center justify-center rounded-md bg-gray-10 text-gray-400"
         >
           <Icon name="solar:record-broken" class="w-6 h-6 animate-spin" />
         </div>

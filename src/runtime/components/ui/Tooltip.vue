@@ -1,57 +1,42 @@
 <script setup lang="ts">
-import { ref, watch } from '#imports'
-import { useFloating, flip, offset, shift } from '@floating-ui/vue'
+import { useId } from '#imports'
 
-const reference = ref<HTMLElement | null>(null)
-const floating = ref<HTMLElement | null>(null)
+withDefaults(
+  defineProps<{
+    text: string
+    arrow?: boolean
+    offset?: number
+  }>(),
+  {
+    arrow: true,
+    offset: 5
+  }
+)
 
-const props = withDefaults(defineProps<{
-  text: string,
-	position?: 'top' | 'bottom' | 'left' | 'right'
-}>(), {
-	position: 'top'
-})
-
-const { floatingStyles, update } = useFloating(reference, floating, {
-	placement: props.position,
-  middleware: [
-    flip(),
-    offset(8),
-    shift({ padding: 5 })
-  ]
-})
-
-const isHovering = ref(false)
-
-watch(isHovering, () => {
-  update()
-})
+const useIdProvider = () => useId()
 </script>
 
 <template>
-  <div class="inline-block">
-    <div
-      ref="reference"
-      @mouseenter="() => (isHovering = true)"
-      @mouseleave="() => (isHovering = false)"
-      class="inline-block"
-    >
-      <slot />
-    </div>
-		<Transition
-			enter-active-class="transition-opacity duration-200 ease-out"
-			leave-active-class="transition-opacity duration-200 ease-out"
-			enter-from-class="opacity-0"
-			leave-to-class="opacity-0"
-		>
-			<div
-				ref="floating"
-				v-show="isHovering"
-				:style="floatingStyles"
-				class="rounded-md px-3 py-1.5 bg-gray-900 text-white"
-			>
-				{{ $props.text }}
-			</div>
-		</Transition>
-  </div>
+  <ConfigProvider :useId="useIdProvider">
+    <TooltipProvider :delayDuration="0">
+      <TooltipRoot>
+        <TooltipTrigger asChild>
+          <slot />
+        </TooltipTrigger>
+        <TooltipPortal>
+          <TooltipContent
+            :side-offset="$props.offset"
+            class="rounded-md px-2 py-1 bg-gray-700 text-white"
+          >
+            {{ $props.text }}
+            <TooltipArrow
+              v-if="$props.arrow"
+              class="fill-gray-700"
+              :width="8"
+            />
+          </TooltipContent>
+        </TooltipPortal>
+      </TooltipRoot>
+    </TooltipProvider>
+  </ConfigProvider>
 </template>

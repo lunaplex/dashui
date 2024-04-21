@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from '#imports'
-import config from '../../config/badge'
+import config from '../../ui.config/badge'
 
 const props = withDefaults(
   defineProps<{

@@ -24,9 +24,10 @@ export default defineNuxtModule<ModuleOptions>({
 
     // Modules
 
+    await installModule('@vueuse/nuxt')
+    await installModule('radix-vue/nuxt')
     await installModule('nuxt-icon')
     await installModule('@nuxt/image')
-    await installModule('nuxt-headlessui')
     await installModule('@nuxtjs/tailwindcss', {
       exposeConfig: true,
       viewer: false,
@@ -67,6 +68,7 @@ export default defineNuxtModule<ModuleOptions>({
 
     // Composables
 
-    addImportsDir(resolve(runtimeDir, 'composables'))
+    addImportsDir(resolve(runtimeDir, 'utils'))
+    addImportsDir(resolve(runtimeDir, 'types'))
   }
 })

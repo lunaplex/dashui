@@ -10,7 +10,7 @@ defineProps<{
 <template>
   <div
     :class="$props.class"
-    class="relative inline-flex flex-col ring-1 ring-gray-200 rounded-lg p-6 bg-white"
+    class="relative ring-1 ring-gray-200 rounded-lg p-6 bg-white"
   >
     <slot />
   </div>

@@ -8,7 +8,7 @@ interface VueElement extends HTMLElement {
   __vue_app__?: App<Element>
 }
 
-export const useTooltip = (context: {
+export const chartTooltip = (context: {
   chart: Chart<any>
   tooltip: TooltipModel<any>
 }) => {

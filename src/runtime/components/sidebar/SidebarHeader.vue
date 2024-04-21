@@ -15,14 +15,14 @@ const toggleOpen = () => {
 </script>
 
 <template>
-  <header class="border-b border-b-gray-200 mb-6 pb-4">
+  <header class="border-b border-b-gray-200 mb-6 pt-[1px] pb-4">
     <div class="relative">
-      <div class="w-full h-8 overflow-hidden">
+      <div class="w-full h-fit max-h-9 overflow-hidden">
         <slot />
       </div>
       <button
         @click="toggleOpen()"
-        class="absolute top-1/2 right-0 translate-x-full -translate-y-1/2 flex items-center justify-center border border-gray-200 rounded-md w-8 h-8 bg-white hover:bg-gray-100 transition-[background-color_right] duration-200"
+        class="absolute top-1/2 right-0 translate-x-full -translate-y-1/2 flex items-center justify-center border border-gray-200 rounded-md w-8 h-8 bg-white hover:bg-gray-50 transition-[background-color_right] duration-200"
       >
         <Icon
           name="lucide:chevron-left"

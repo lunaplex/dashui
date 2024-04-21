@@ -21,7 +21,7 @@ const items = ref([
     ]
   },
   {
-    icon: 'solar:settings-linear',
+    icon: 'solar:settings-minimalistic-linear',
     label: 'Settings',
     to: '/settings'
   }
@@ -34,7 +34,7 @@ const items = ref([
       <SidebarHeader>
         <NuxtLink
           to="/"
-          class="relative inline-flex items-center w-full h-8 font-bold"
+          class="relative inline-flex items-center w-full h-9 font-bold"
         >
           <img
             src="/lunaplex.svg"
@@ -53,9 +53,14 @@ const items = ref([
         />
       </SidebarFooter>
     </Sidebar>
-    <div>
-      <div class="px-6 py-4 w-full h-16">
-        <TextInput v-model="search" placeholder="Search..." />
+    <div class="flex-1">
+      <div class="px-6 py-4 w-full">
+        <TextInput
+          v-model="search"
+          icon="lucide:search"
+          placeholder="Search..."
+          class="w-[300px]"
+        />
       </div>
       <div class="px-6">
         <slot />
